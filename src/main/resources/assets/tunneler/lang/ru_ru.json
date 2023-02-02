@@ -1,0 +1,13 @@
+{
+  "text.tunneler.not_opened": "Мир не открыт для сети",
+  "text.tunneler.no_tunnels": "Туннель не открыт",
+  "text.tunneler.error": "Ошибка: %s",
+  "text.tunneler.already_opened": "Туннель уже открыт",
+  "text.tunneler.create_tunnel": "Открыть сетевой туннель",
+  "text.tunneler.closed": "Туннель успешно закрыт",
+  "text.tunneler.opened": "IP сетевого туннеля: %s",
+  "text.tunneler.copied": "Адрес скопирован в буфер обмена",
+  "text.autoconfig.tunneler.title": "Настройки Tunneler",
+  "text.autoconfig.tunneler.option.token": "Токен",
+  "text.autoconfig.tunneler.option.region": "Регион"
+}

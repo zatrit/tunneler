@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "tunneler",
+  "version": "${version}",
+  "name": "Tunneler",
+  "authors": [
+    "Zatrit156"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "Apache License 2.0",
+  "icon": "assets/tunneler/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.zatrit.tunneler.client.TunnelerClient"
+    ],
+    "modmenu": [
+      "net.zatrit.tunneler.client.ModMenuIntegration"
+    ],
+    "server": [
+      "net.zatrit.tunneler.server.TunnelerServer"
+    ]
+  },
+  "mixins": [
+    "tunneler.mixins.json"
+  ],
+  "depends": {
+    "fabric-command-api-v2": "*",
+    "minecraft": "~1.19",
+    "java": ">=17",
+    "cloth-config": ">=8.0.0"
+  }
+}

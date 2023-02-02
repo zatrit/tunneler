@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.zatrit.tunneler.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "client.ChatScreenMixin",
+    "client.FabricClientCommandSourceMixin",
+    "client.IntegratedServerMixin",
+    "client.MinecraftClientMixin",
+    "client.OpenToLanScreenMixin"
+  ],
+  "server": [
+    "server.ServerCommandSourceMixin"
+  ],
+  "mixins": [
+    "MinecraftServerMixin"
+  ]
+}

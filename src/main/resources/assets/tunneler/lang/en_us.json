@@ -1,0 +1,13 @@
+{
+  "text.tunneler.not_opened": "World isn't opened to LAN",
+  "text.tunneler.no_tunnels": "Tunnel isn't opened",
+  "text.tunneler.error": "Error: %s",
+  "text.tunneler.already_opened": "Tunnel already opened",
+  "text.tunneler.create_tunnel": "Create tunnel",
+  "text.tunneler.closed": "Tunnel closed successfully",
+  "text.tunneler.opened": "Tunnel IP: %s",
+  "text.tunneler.copied": "Address copied to clipboard",
+  "text.autoconfig.tunneler.title": "Tunneler options",
+  "text.autoconfig.tunneler.option.token": "Token",
+  "text.autoconfig.tunneler.option.region": "Region"
+}
