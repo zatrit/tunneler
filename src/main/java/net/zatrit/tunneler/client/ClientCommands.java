@@ -21,6 +21,9 @@ import org.jetbrains.annotations.NotNull;
 import static com.mojang.brigadier.arguments.StringArgumentType.string;
 import static net.zatrit.tunneler.ChatUtils.error;
 
+/**
+ * Команды для клиента для работы с ngrok
+ */
 @SuperBuilder
 @SuppressWarnings("CodeBlock2Expr")
 @Environment(EnvType.CLIENT)
@@ -46,9 +49,13 @@ public class ClientCommands extends AbstractCommands implements ClientCommandReg
     private int tunnelOpen(@NotNull CommandContext<FabricClientCommandSource> context) {
         final var source = context.getSource();
         final var server = source.getClient().getServer();
-        final var serverInfo = source.getClient().getCurrentServerEntry();
+        final var serverInfo = source
+                .getClient()
+                .getCurrentServerEntry();
         String ip = null;
         if (server != null) {
+            /* Если запущен интегрированный сервер, то получает его IP,
+            иначе выдаёт ошибку */
             if (server.getServerPort() != -1) {
                 ip = this.getTunneler().getServerIp(server);
             } else {
@@ -56,6 +63,7 @@ public class ClientCommands extends AbstractCommands implements ClientCommandReg
                         "text.tunneler.not_opened"));
             }
         } else if (serverInfo != null) {
+            // Если игрок находится на сервере, то используется его IP
             ip = serverInfo.address;
         }
         if (ip != null) {
@@ -78,6 +86,9 @@ public class ClientCommands extends AbstractCommands implements ClientCommandReg
         return 0;
     }
 
+    /**
+     * Регистрирует все команды с помощью функционала FabricMC
+     */
     @Override
     public void register(@NotNull CommandDispatcher<FabricClientCommandSource> dispatcher,
                          CommandRegistryAccess registryAccess) {
@@ -93,9 +104,6 @@ public class ClientCommands extends AbstractCommands implements ClientCommandReg
                         .<FabricClientCommandSource>literal("copyip")
                         .executes(this::tunnelCopyIp))
                 .then(LiteralArgumentBuilder
-                        .<FabricClientCommandSource>literal("help")
-                        .executes(this::tunnelHelp))
-                .then(LiteralArgumentBuilder
                         .<FabricClientCommandSource>literal("options")
                         .executes(this::tunnelOptions))
                 .then(LiteralArgumentBuilder
@@ -105,8 +113,8 @@ public class ClientCommands extends AbstractCommands implements ClientCommandReg
                                         "token",
                                         string())
                                 .executes(this::tunnelToken))
-                        .executes(this::tunnelHelp))
-                .executes(this::tunnelHelp);
+                        .executes(this::tunnelUnknownCommand))
+                .executes(this::tunnelUnknownCommand);
         dispatcher.register(command);
     }
 }

@@ -9,5 +9,9 @@ import java.util.function.Function;
  * принудительно указать следующий экран. См. {@link net.zatrit.tunneler.mixin.client.ChatScreenMixin}
  */
 public interface NextScreen {
+    /**
+     * Поле, содержащее экран, к которому произойдёт переход после
+     * закрытия данного экрана
+     */
     void setNextScreen(Function<Screen, Screen> screen);
 }

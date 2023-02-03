@@ -9,10 +9,13 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.zatrit.tunneler.Tunneler;
 import net.zatrit.tunneler.TunnelerConfig;
-import net.zatrit.tunneler.service.NgrokWrapper;
+import net.zatrit.tunneler.service.TunnelServiceWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Инициализатор мода для клиента
+ */
 @Environment(EnvType.CLIENT)
 public class TunnelerClient implements ClientModInitializer {
     @Getter
@@ -22,6 +25,10 @@ public class TunnelerClient implements ClientModInitializer {
     @Getter
     private static Tunneler tunneler;
 
+    /**
+     * Закрывает туннель, если такой есть
+     * без обработки ошибок
+     */
     public static void shutdown() {
         tunneler.close(() -> {}, ex -> {});
     }
@@ -33,9 +40,11 @@ public class TunnelerClient implements ClientModInitializer {
 
         final var configHolder = AutoConfig.getConfigHolder(
                 TunnelerConfig.class);
+        final var serviceWrapper = TunnelServiceWrapper.fromConfig(
+                configHolder);
         tunneler = Tunneler
                 .builder()
-                .serviceWrapper(new NgrokWrapper(configHolder))
+                .serviceWrapper(serviceWrapper)
                 .build();
         var commands = ClientCommands
                 .builder()

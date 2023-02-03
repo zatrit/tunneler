@@ -13,8 +13,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
+/**
+ * Реализация {@link TunnelServiceWrapper} для ngrok
+ * Класс имеет модификатор доступа package-only, так как
+ * для инициализации класса надо использовать {@link TunnelServiceWrapper#fromConfig}
+ */
 @RequiredArgsConstructor
-public class NgrokWrapper implements TunnelServiceWrapper {
+class NgrokWrapper implements TunnelServiceWrapper {
     private final ConfigHolder<TunnelerConfig> configHolder;
     private final ExecutorService threadPool = Executors.newSingleThreadExecutor();
     private NgrokClient ngrokClient;
@@ -30,15 +35,19 @@ public class NgrokWrapper implements TunnelServiceWrapper {
                 log));
     }
 
+    /**
+     * Открывает туннель, используется в {@link TunnelServiceWrapper#open}
+     */
     private void openSync(String ip,
                           Consumer<TunnelData> callback,
                           Consumer<Exception> errorCallback,
                           Consumer<String> log) {
         try {
+            final var config = this.configHolder.getConfig();
             // Создаёт конфиг из настроек
             final var ngrokConfig = new JavaNgrokConfig.Builder()
-                    .withAuthToken(this.getConfig().token)
-                    .withRegion(this.getConfig().region)
+                    .withAuthToken(config.token)
+                    .withRegion(config.region)
                     .withLogEventCallback(ngrokLog -> {
                         log.accept(ngrokLog.getMsg());
                         return null;
@@ -61,16 +70,17 @@ public class NgrokWrapper implements TunnelServiceWrapper {
         }
     }
 
-    private TunnelerConfig getConfig() {
-        return this.configHolder.getConfig();
-    }
-
     public void close(TunnelData data,
                       Runnable callback,
                       Consumer<Exception> errorCallback) {
-        threadPool.execute(() -> closeSync(data, callback, errorCallback));
+        threadPool.execute(() -> closeSync(data,
+                callback,
+                errorCallback));
     }
 
+    /**
+     * Закрывает туннель, используется в {@link TunnelServiceWrapper#close}
+     */
     private void closeSync(@NotNull TunnelData tunnelData,
                            Runnable callback,
                            Consumer<Exception> errorCallback) {

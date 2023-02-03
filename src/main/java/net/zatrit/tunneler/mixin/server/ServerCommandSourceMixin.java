@@ -8,6 +8,9 @@ import net.zatrit.tunneler.interfaces.FeedbackReceiver;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
+/**
+ * Реализация {@link FeedbackReceiver} для источника команда сервера
+ */
 @Environment(EnvType.SERVER)
 @Mixin(ServerCommandSource.class)
 public abstract class ServerCommandSourceMixin implements FeedbackReceiver {

@@ -15,30 +15,42 @@ import java.util.function.Consumer;
 
 import static net.zatrit.tunneler.ChatUtils.error;
 
-// Класс, реализующий основной функционал мода
-// также он имеет автоматическую реализацию паттерна builder'а
+/**
+ * Класс, реализующий основной функционал мода
+ * также он имеет автоматическую реализацию паттерна builder'а
+ */
 @Getter
 @SuperBuilder
 public class Tunneler {
+    /**
+     * Реализации сервиса для создания туннелей
+     */
     private final TunnelServiceWrapper serviceWrapper;
+    /**
+     * Обёртка для туннеля, подробнее в описании {@link TunnelWrapper}
+     */
     private final TunnelWrapper tunnelWrapper = new TunnelWrapper();
+    /**
+     * Стандартный IP для туннелей
+     */
     private @Builder.Default String defaultIp = "127.0.0.1";
 
+    /**
+     * @return IP адрес сервера
+     */
     @Nullable
     public String getServerIp(@NotNull MinecraftServer server) {
-        if (server.getServerPort() != -1) {
-            return Optional
-                    .ofNullable(server.getServerIp())
-                    .orElse(getDefaultIp()) +
-                    ":" +
-                    server.getServerPort();
-        } else {
-            return null;
-        }
+        return Optional
+                .of(getDefaultIp())
+                .or(() -> Optional.ofNullable(server.getServerIp()))
+                .filter(s -> server.getServerPort() != -1)
+                .map(s -> s + ":" + server.getServerPort())
+                .orElse(null);
     }
 
     public void openOnIp(FeedbackReceiver source, String ip) {
         if (this.getTunnelWrapper().hasTunnel()) {
+            // Возвращает ошибку, если туннель уже открыт
             source.sendError(Text.translatable(
                     "text.tunneler.already_opened"));
             return;
@@ -60,15 +72,20 @@ public class Tunneler {
         });
     }
 
-    // Функция для открытия туннеля для определённого сервера
-    // используется в net.zatrit.tunneler.client.TunnelerClient
+    /**
+     * Функция для открытия туннеля для определённого сервера
+     * используется в {@link net.zatrit.tunneler.client.TunnelerClient}
+     */
     public void openForServer(FeedbackReceiver source,
                               MinecraftServer server) {
         openOnIp(source, getServerIp(server));
     }
 
-    public void close(Runnable success,
-                      Consumer<Exception> error) {
+    /**
+     * Функция для закрытия туннеля с обработчиком ошибок и
+     * успешного результата
+     */
+    public void close(Runnable success, Consumer<Exception> error) {
         this.getTunnelWrapper().map(tunnel -> {
             this.getServiceWrapper().close(tunnel, success, error);
             this.getTunnelWrapper().setTunnel(null);

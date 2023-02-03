@@ -10,6 +10,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * Закрывает все туннели при выключении сервера
+ * и на сервере, и на клиенте
+ */
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
     @Environment(EnvType.CLIENT)

@@ -7,6 +7,7 @@
   "text.tunneler.closed": "Tunnel closed successfully",
   "text.tunneler.opened": "Tunnel IP: %s",
   "text.tunneler.copied": "Address copied to clipboard",
+  "text.tunneler.unknown_command": "Unknown command or wrong number of args",
   "text.autoconfig.tunneler.title": "Tunneler options",
   "text.autoconfig.tunneler.option.token": "Token",
   "text.autoconfig.tunneler.option.region": "Region"

@@ -17,10 +17,11 @@ import net.zatrit.tunneler.interfaces.FeedbackReceiver;
 import org.jetbrains.annotations.NotNull;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.string;
-import static net.zatrit.tunneler.ChatUtils.error;
 
+/**
+ * Команды для сервера для работы с ngrok
+ */
 @SuperBuilder
-@SuppressWarnings("CodeBlock2Expr")
 @Environment(EnvType.SERVER)
 public class ServerCommands extends AbstractCommands implements CommandRegistrationCallback {
     /**
@@ -35,23 +36,14 @@ public class ServerCommands extends AbstractCommands implements CommandRegistrat
             return 0;
         }
         final var server = source.getServer();
-        String ip = null;
-        if (server != null) {
-            ip = getTunneler().getServerIp(server);
-        }
-        if (ip != null) {
-            this.getTunneler().getServiceWrapper().open(ip, data -> {
-                wrapper.setTunnel(data);
-                wrapper.map(tunnel -> {
-                    source.sendMessage(Text.translatable(
-                            "text.tunneler.opened",
-                            tunnel.getShortIp()));
-                }, error((FeedbackReceiver) source));
-            }, error((FeedbackReceiver) source), log -> {});
-        }
+        final var receiver = (FeedbackReceiver) source;
+        this.getTunneler().openForServer(receiver, server);
         return 0;
     }
 
+    /**
+     * Регистрирует все команды с помощью функционала FabricMC
+     */
     @Override
     public void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher,
                          CommandRegistryAccess registryAccess,
@@ -65,17 +57,14 @@ public class ServerCommands extends AbstractCommands implements CommandRegistrat
                         .<ServerCommandSource>literal("close")
                         .executes(this::tunnelClose))
                 .then(LiteralArgumentBuilder
-                        .<ServerCommandSource>literal("help")
-                        .executes(this::tunnelHelp))
-                .then(LiteralArgumentBuilder
                         .<ServerCommandSource>literal("token")
                         .then(RequiredArgumentBuilder
                                 .<ServerCommandSource, String>argument(
                                         "token",
                                         string())
                                 .executes(this::tunnelToken))
-                        .executes(this::tunnelHelp))
-                .executes(this::tunnelHelp);
+                        .executes(this::tunnelUnknownCommand))
+                .executes(this::tunnelUnknownCommand);
         dispatcher.register(command);
     }
 }

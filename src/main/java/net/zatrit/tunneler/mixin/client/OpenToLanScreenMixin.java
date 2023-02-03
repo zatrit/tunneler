@@ -12,6 +12,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * Миксин в класс {@link OpenToLanScreen},
+ * добавляющий кнопку для проброса порта через ngrok
+ */
 @Environment(EnvType.CLIENT)
 @Mixin(OpenToLanScreen.class)
 public class OpenToLanScreenMixin extends Screen {

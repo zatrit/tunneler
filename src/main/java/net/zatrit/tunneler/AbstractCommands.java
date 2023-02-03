@@ -12,17 +12,20 @@ import org.jetbrains.annotations.NotNull;
 import static com.mojang.brigadier.arguments.StringArgumentType.getString;
 import static net.zatrit.tunneler.ChatUtils.error;
 
-/*
-Общая для клиента и сервера реализация команд,
-позволяющая создавать специфичные для среды
-реализаций команд.
-*/
+/**
+ * Общая для клиента и сервера реализация команд,
+ * позволяющая создавать специфичные для среды
+ * реализаций команд.
+ */
 @SuperBuilder
 @Getter(AccessLevel.PROTECTED)
 public abstract class AbstractCommands {
     private final ConfigHolder<TunnelerConfig> configHolder;
     private final Tunneler tunneler;
 
+    /**
+     * Задаёт токен ngrok. Применение: /tunnel token [токен]
+     */
     protected int tunnelToken(CommandContext<?> context) {
         final var configHolder = this.getConfigHolder();
         final var config = configHolder.getConfig();
@@ -32,17 +35,22 @@ public abstract class AbstractCommands {
         return 0;
     }
 
-    protected int tunnelHelp(@NotNull CommandContext<?> context) {
+    /**
+     * Сообщение о неизвестной команде
+     */
+    protected int tunnelUnknownCommand(@NotNull CommandContext<?> context) {
         var source = (FeedbackReceiver) context.getSource();
-        source.sendFeedback(Text.of("TEST"));
+        source.sendFeedback(Text.translatable("text.tunneler.unknown_command"));
         return 0;
     }
 
+    /**
+     * Команда для закрытия туннеля. Применение: /tunnel close
+     */
     protected int tunnelClose(@NotNull CommandContext<?> context) {
         var source = (FeedbackReceiver) context.getSource();
         this.getTunneler().close(() -> {
-            source.sendFeedback(Text.translatable(
-                    "text.tunneler.closed"));
+            source.sendFeedback(Text.translatable("text.tunneler.closed"));
         }, error(source));
         return 0;
     }

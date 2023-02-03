@@ -7,6 +7,7 @@
   "text.tunneler.closed": "Туннель успешно закрыт",
   "text.tunneler.opened": "IP сетевого туннеля: %s",
   "text.tunneler.copied": "Адрес скопирован в буфер обмена",
+  "text.tunneler.unknown_command": "Неизвестная команда или неверное число аргументов",
   "text.autoconfig.tunneler.title": "Настройки Tunneler",
   "text.autoconfig.tunneler.option.token": "Токен",
   "text.autoconfig.tunneler.option.region": "Регион"

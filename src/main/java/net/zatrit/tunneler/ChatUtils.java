@@ -11,6 +11,9 @@ import java.util.function.Consumer;
  * Утилитный класс, позволяющий не дублировать код вывода ошибок
  */
 public class ChatUtils {
+    /**
+     * @return Обработчик ошибок для {@link FeedbackReceiver}
+     */
     @Contract(pure = true)
     public static @NotNull Consumer<Exception> error(FeedbackReceiver source) {
         return ex -> source.sendError(Text.translatable(

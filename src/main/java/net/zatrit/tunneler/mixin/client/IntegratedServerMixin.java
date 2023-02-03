@@ -18,17 +18,22 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/**
+ * Позволяет открывать туннель для локального сервера
+ */
 @Environment(EnvType.CLIENT)
 @Mixin(IntegratedServer.class)
 public abstract class IntegratedServerMixin implements TunnelMinecraftServer {
     @Shadow
     @Final
     private MinecraftClient client;
+
     @Setter
     @Getter
     private boolean tunnelEnabled;
 
-    @Inject(method = "openToLan", at = @At(value = "RETURN", ordinal = 0))
+    @Inject(method = "openToLan",
+            at = @At(value = "RETURN", ordinal = 0))
     private void openToLan(GameMode gameMode,
                            boolean cheatsAllowed,
                            int port,
