@@ -17,7 +17,7 @@ import java.util.function.Function;
 /**
  * Миксин для класса экрана чата {@link ChatScreen}, позволяющий перейти к
  * настройкам мода через команду (см. {@link ClientCommands}),
- * так как иначе он просто закрывает любой экран
+ * так как иначе Minecraft просто закрывает любой экран
  */
 @Mixin(ChatScreen.class)
 @Environment(EnvType.CLIENT)

@@ -32,6 +32,7 @@ public abstract class IntegratedServerMixin implements TunnelMinecraftServer {
     @Getter
     private boolean tunnelEnabled;
 
+    @SuppressWarnings("DataFlowIssue")
     @Inject(method = "openToLan",
             at = @At(value = "RETURN", ordinal = 0))
     private void openToLan(GameMode gameMode,
