@@ -3,7 +3,7 @@
   "text.tunneler.no_tunnels": "Туннель не открыт",
   "text.tunneler.error": "Ошибка: %s",
   "text.tunneler.already_opened": "Туннель уже открыт",
-  "text.tunneler.create_tunnel": "Открыть сетевой туннель",
+  "text.tunneler.create_tunnel": "Сетевой туннель",
   "text.tunneler.closed": "Туннель успешно закрыт",
   "text.tunneler.opened": "IP сетевого туннеля: %s",
   "text.tunneler.copied": "Адрес скопирован в буфер обмена",

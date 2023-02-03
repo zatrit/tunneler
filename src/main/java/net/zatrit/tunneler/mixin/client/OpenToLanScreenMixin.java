@@ -23,6 +23,7 @@ public class OpenToLanScreenMixin extends Screen {
         super(title);
     }
 
+    @SuppressWarnings("DataFlowIssue")
     @Inject(method = "init", at = @At("RETURN"))
     private void init(CallbackInfo ci) {
         var tunnelServer = ((TunnelMinecraftServer) this.client.getServer());
