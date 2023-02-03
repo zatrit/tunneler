@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
+import net.minecraft.text.Texts;
 import net.zatrit.tunneler.interfaces.FeedbackReceiver;
 import net.zatrit.tunneler.service.TunnelServiceWrapper;
 import org.jetbrains.annotations.NotNull;
@@ -66,7 +67,7 @@ public class Tunneler {
             this.getTunnelWrapper().map(tunnel -> {
                 source.sendFeedback(Text.translatable(
                         "text.tunneler.opened",
-                        tunnel.getShortIp()));
+                        Texts.bracketedCopyable(tunnel.getShortIp())));
             }, error(source));
         }, error(source), log -> {
         });
