@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 /**
- * Реализация {@link FeedbackReceiver} для источника команда сервера
+ * Реализация {@link FeedbackReceiver} для источника команд сервера
  */
 @Environment(EnvType.SERVER)
 @Mixin(ServerCommandSource.class)
