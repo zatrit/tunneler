@@ -1,5 +1,6 @@
 package net.zatrit.tunneler.client;
 
+import com.github.alexdlaird.ngrok.protocol.Region;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -13,6 +14,7 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.text.Text;
 import net.zatrit.tunneler.AbstractCommands;
+import net.zatrit.tunneler.RegionArgumentType;
 import net.zatrit.tunneler.TunnelerConfig;
 import net.zatrit.tunneler.interfaces.FeedbackReceiver;
 import net.zatrit.tunneler.interfaces.NextScreen;
@@ -33,7 +35,7 @@ public class ClientCommands extends AbstractCommands implements ClientCommandReg
      * Применение: /tunnel copyip
      */
     private int tunnelCopyIp(@NotNull CommandContext<FabricClientCommandSource> context) {
-        var source = context.getSource();
+        final var source = context.getSource();
         this.getTunneler().getTunnelWrapper().map(tunnel -> {
             final var client = source.getClient();
             client.keyboard.setClipboard(tunnel.getShortIp());
@@ -54,8 +56,10 @@ public class ClientCommands extends AbstractCommands implements ClientCommandReg
                 .getCurrentServerEntry();
         String ip = null;
         if (server != null) {
-            /* Если запущен интегрированный сервер, то получает его IP,
-            иначе выдаёт ошибку */
+            /*
+             * Если запущен интегрированный сервер, то получает его IP,
+             * иначе выдаёт ошибку
+             */
             if (server.getServerPort() != -1) {
                 ip = this.getTunneler().getServerIp(server);
             } else {
@@ -77,7 +81,7 @@ public class ClientCommands extends AbstractCommands implements ClientCommandReg
      * Применение: /tunnel options
      */
     private int tunnelOptions(@NotNull CommandContext<FabricClientCommandSource> context) {
-        var client = context.getSource().getClient();
+        final var client = context.getSource().getClient();
         ((NextScreen) client.currentScreen).setNextScreen(parent -> {
             return AutoConfig
                     .getConfigScreen(TunnelerConfig.class, parent)
@@ -91,7 +95,7 @@ public class ClientCommands extends AbstractCommands implements ClientCommandReg
      */
     @Override
     public void register(@NotNull CommandDispatcher<FabricClientCommandSource> dispatcher,
-                         CommandRegistryAccess registryAccess) {
+            CommandRegistryAccess registryAccess) {
         var command = LiteralArgumentBuilder
                 .<FabricClientCommandSource>literal("tunnel")
                 .then(LiteralArgumentBuilder
@@ -113,6 +117,12 @@ public class ClientCommands extends AbstractCommands implements ClientCommandReg
                                         "token",
                                         string())
                                 .executes(this::tunnelToken))
+                        .executes(this::tunnelUnknownCommand))
+                .then(LiteralArgumentBuilder.<FabricClientCommandSource>literal("region")
+                        .then(RequiredArgumentBuilder
+                                .<FabricClientCommandSource, Region>argument(
+                                        "region", new RegionArgumentType())
+                                .executes(this::tunnelRegion))
                         .executes(this::tunnelUnknownCommand))
                 .executes(this::tunnelUnknownCommand);
         dispatcher.register(command);

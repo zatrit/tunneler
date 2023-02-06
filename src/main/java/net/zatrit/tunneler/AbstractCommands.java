@@ -1,5 +1,6 @@
 package net.zatrit.tunneler;
 
+import com.github.alexdlaird.ngrok.protocol.Region;
 import com.mojang.brigadier.context.CommandContext;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,11 +36,24 @@ public abstract class AbstractCommands {
         return 0;
     }
 
+    protected int tunnelRegion(CommandContext<?> context) {
+        final var source = (FeedbackReceiver) context.getSource();
+        final var configHolder = this.getConfigHolder();
+        final var config = configHolder.getConfig();
+        final var region = context.getArgument("region", Region.class);
+
+        config.region = region;
+        configHolder.setConfig(config);
+        configHolder.save();
+
+        return 0;
+    }
+
     /**
      * Сообщение о неизвестной команде
      */
     protected int tunnelUnknownCommand(@NotNull CommandContext<?> context) {
-        var source = (FeedbackReceiver) context.getSource();
+        final var source = (FeedbackReceiver) context.getSource();
         source.sendFeedback(Text.translatable("text.tunneler.unknown_command"));
         return 0;
     }
@@ -48,7 +62,7 @@ public abstract class AbstractCommands {
      * Команда для закрытия туннеля. Применение: /tunnel close
      */
     protected int tunnelClose(@NotNull CommandContext<?> context) {
-        var source = (FeedbackReceiver) context.getSource();
+        final var source = (FeedbackReceiver) context.getSource();
         this.getTunneler().close(() -> {
             source.sendFeedback(Text.translatable("text.tunneler.closed"));
         }, error(source));

@@ -1,5 +1,6 @@
 package net.zatrit.tunneler.server;
 
+import com.github.alexdlaird.ngrok.protocol.Region;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -13,6 +14,7 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.zatrit.tunneler.AbstractCommands;
+import net.zatrit.tunneler.RegionArgumentType;
 import net.zatrit.tunneler.interfaces.FeedbackReceiver;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,8 +48,8 @@ public class ServerCommands extends AbstractCommands implements CommandRegistrat
      */
     @Override
     public void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher,
-                         CommandRegistryAccess registryAccess,
-                         CommandManager.RegistrationEnvironment environment) {
+            CommandRegistryAccess registryAccess,
+            CommandManager.RegistrationEnvironment environment) {
         var command = LiteralArgumentBuilder
                 .<ServerCommandSource>literal("tunnel")
                 .then(LiteralArgumentBuilder
@@ -60,9 +62,14 @@ public class ServerCommands extends AbstractCommands implements CommandRegistrat
                         .<ServerCommandSource>literal("token")
                         .then(RequiredArgumentBuilder
                                 .<ServerCommandSource, String>argument(
-                                        "token",
-                                        string())
+                                        "token", string())
                                 .executes(this::tunnelToken))
+                        .executes(this::tunnelUnknownCommand))
+                .then(LiteralArgumentBuilder.<ServerCommandSource>literal("region")
+                        .then(RequiredArgumentBuilder
+                                .<ServerCommandSource, Region>argument(
+                                        "region", new RegionArgumentType())
+                                .executes(this::tunnelRegion))
                         .executes(this::tunnelUnknownCommand))
                 .executes(this::tunnelUnknownCommand);
         dispatcher.register(command);
