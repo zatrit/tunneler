@@ -4,7 +4,6 @@
     // Плагин для копирования классов определённых
     // зависимостей в jar-файл сборки
     id 'com.github.johnrengelman.shadow' version '7.1.2'
-    id 'maven-publish'
 }
 
 version = project.mod_version
@@ -67,14 +66,6 @@ shadowJar {
 remapJar {
     dependsOn(shadowJar)
     inputFile.set(shadowJar.archiveFile)
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-          from components.java
-        }
-    }
 }
 
 java {
