@@ -66,6 +66,10 @@ remapJar {
     inputFile.set(shadowJar.archiveFile)
 }
 
+jar {
+    from "LICENSE"
+}
+
 java {
     archivesBaseName = project.archives_base_name
     // Указывается версия исходного кода (минимальная, поддерживающая var, т.е. 10)

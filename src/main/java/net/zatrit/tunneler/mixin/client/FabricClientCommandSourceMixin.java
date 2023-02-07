@@ -11,6 +11,6 @@ import org.spongepowered.asm.mixin.Mixin;
  * {@link FeedbackReceiver}
  */
 @Environment(EnvType.CLIENT)
-@Mixin(FabricClientCommandSource.class)
+@Mixin(value = FabricClientCommandSource.class)
 public interface FabricClientCommandSourceMixin extends FeedbackReceiver {
 }

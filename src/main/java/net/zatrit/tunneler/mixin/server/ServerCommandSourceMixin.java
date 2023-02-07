@@ -12,11 +12,10 @@ import org.spongepowered.asm.mixin.Shadow;
  * Реализация {@link FeedbackReceiver} для источника команд сервера
  */
 @Environment(EnvType.SERVER)
-@Mixin(ServerCommandSource.class)
+@Mixin(value = ServerCommandSource.class)
 public abstract class ServerCommandSourceMixin implements FeedbackReceiver {
-    @Shadow
-    @Override
-    public abstract void sendError(Text text);
+    @Shadow(prefix = "shadow_")
+    public abstract void shadow_sendError(Text text);
 
     @Shadow
     public abstract void sendFeedback(Text text,
@@ -25,5 +24,10 @@ public abstract class ServerCommandSourceMixin implements FeedbackReceiver {
     @Override
     public void sendFeedback(Text text) {
         this.sendFeedback(text, false);
+    }
+
+    @Override
+    public void sendError(Text text) {
+        this.shadow_sendError(text);
     }
 }
