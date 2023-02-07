@@ -95,7 +95,7 @@ public class ClientCommands extends AbstractCommands implements ClientCommandReg
      */
     @Override
     public void register(@NotNull CommandDispatcher<FabricClientCommandSource> dispatcher,
-            CommandRegistryAccess registryAccess) {
+                         CommandRegistryAccess registryAccess) {
         var command = LiteralArgumentBuilder
                 .<FabricClientCommandSource>literal("tunnel")
                 .then(LiteralArgumentBuilder
@@ -118,10 +118,12 @@ public class ClientCommands extends AbstractCommands implements ClientCommandReg
                                         string())
                                 .executes(this::tunnelToken))
                         .executes(this::tunnelUnknownCommand))
-                .then(LiteralArgumentBuilder.<FabricClientCommandSource>literal("region")
+                .then(LiteralArgumentBuilder.<FabricClientCommandSource>literal(
+                                "region")
                         .then(RequiredArgumentBuilder
                                 .<FabricClientCommandSource, Region>argument(
-                                        "region", new RegionArgumentType())
+                                        "region",
+                                        new RegionArgumentType())
                                 .executes(this::tunnelRegion))
                         .executes(this::tunnelUnknownCommand))
                 .executes(this::tunnelUnknownCommand);

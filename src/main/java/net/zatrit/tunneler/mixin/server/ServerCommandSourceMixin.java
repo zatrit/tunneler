@@ -19,7 +19,8 @@ public abstract class ServerCommandSourceMixin implements FeedbackReceiver {
     public abstract void sendError(Text text);
 
     @Shadow
-    public abstract void sendFeedback(Text text, boolean broadcastToOps);
+    public abstract void sendFeedback(Text text,
+                                      boolean broadcastToOps);
 
     @Override
     public void sendFeedback(Text text) {

@@ -52,9 +52,8 @@ shadowJar {
     dependencies {
         // В Minecraft и так присутствует GSON, так что
         // нету смысла добавлять его в jar-файл
-        // Тем более это экономия в ~300 килобайт
+        // Тем более это экономия в ~100 килобайт
         exclude dependency('com.google.code.gson:gson')
-        exclude dependency('org.yaml:snakeyaml')
     }
 
     configurations = [project.configurations.shadow]

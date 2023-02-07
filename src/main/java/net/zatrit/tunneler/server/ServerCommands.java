@@ -48,8 +48,8 @@ public class ServerCommands extends AbstractCommands implements CommandRegistrat
      */
     @Override
     public void register(@NotNull CommandDispatcher<ServerCommandSource> dispatcher,
-            CommandRegistryAccess registryAccess,
-            CommandManager.RegistrationEnvironment environment) {
+                         CommandRegistryAccess registryAccess,
+                         CommandManager.RegistrationEnvironment environment) {
         var command = LiteralArgumentBuilder
                 .<ServerCommandSource>literal("tunnel")
                 .then(LiteralArgumentBuilder
@@ -65,10 +65,12 @@ public class ServerCommands extends AbstractCommands implements CommandRegistrat
                                         "token", string())
                                 .executes(this::tunnelToken))
                         .executes(this::tunnelUnknownCommand))
-                .then(LiteralArgumentBuilder.<ServerCommandSource>literal("region")
+                .then(LiteralArgumentBuilder.<ServerCommandSource>literal(
+                                "region")
                         .then(RequiredArgumentBuilder
                                 .<ServerCommandSource, Region>argument(
-                                        "region", new RegionArgumentType())
+                                        "region",
+                                        new RegionArgumentType())
                                 .executes(this::tunnelRegion))
                         .executes(this::tunnelUnknownCommand))
                 .executes(this::tunnelUnknownCommand);

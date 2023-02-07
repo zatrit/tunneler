@@ -4,8 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.text.Texts;
+import net.minecraft.util.Formatting;
 import net.zatrit.tunneler.interfaces.FeedbackReceiver;
 import net.zatrit.tunneler.service.TunnelServiceWrapper;
 import org.jetbrains.annotations.NotNull;
@@ -41,8 +42,7 @@ public class Tunneler {
      */
     @Nullable
     public String getServerIp(@NotNull MinecraftServer server) {
-        return Optional
-                .of(getDefaultIp())
+        return Optional.of(getDefaultIp())
                 .or(() -> Optional.ofNullable(server.getServerIp()))
                 .filter(s -> server.getServerPort() != -1)
                 .map(s -> s + ":" + server.getServerPort())
@@ -67,7 +67,9 @@ public class Tunneler {
             this.getTunnelWrapper().map(tunnel -> {
                 source.sendFeedback(Text.translatable(
                         "text.tunneler.opened",
-                        Texts.bracketedCopyable(tunnel.getShortIp())));
+                        Text.of(tunnel.getShortIp())
+                                .getWithStyle(Style.EMPTY.withColor(
+                                        Formatting.GREEN))));
             }, error(source));
         }, error(source), log -> {
         });

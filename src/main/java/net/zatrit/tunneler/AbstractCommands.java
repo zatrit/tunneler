@@ -54,7 +54,8 @@ public abstract class AbstractCommands {
      */
     protected int tunnelUnknownCommand(@NotNull CommandContext<?> context) {
         final var source = (FeedbackReceiver) context.getSource();
-        source.sendFeedback(Text.translatable("text.tunneler.unknown_command"));
+        source.sendFeedback(Text.translatable(
+                "text.tunneler.unknown_command"));
         return 0;
     }
 
