@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
-import net.minecraft.text.Texts;
 import net.zatrit.tunneler.interfaces.FeedbackReceiver;
 import net.zatrit.tunneler.service.TunnelServiceWrapper;
+import net.zatrit.tunneler.textsupport.TextSupport;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -66,7 +68,7 @@ public class Tunneler {
             this.getTunnelWrapper().map(tunnel -> {
                 source.sendFeedback(Text.translatable(
                         "text.tunneler.opened",
-                        Texts.bracketedCopyable(tunnel.getShortIp())));
+                        TextSupport.INSTANCE.ipText(tunnel.getShortIp())));
             }, error(source));
         }, error(source), log -> {
         });
